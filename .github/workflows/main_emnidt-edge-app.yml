@@ -38,9 +38,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: python-app
+          # path: |
+          #   .
+          #   !venv/
           path: |
-            .
-            !venv/
+            app.py
+            requirements.txt
+            EdgeCNN_mobile.pt
 
   deploy:
     runs-on: ubuntu-latest
