@@ -72,4 +72,5 @@ jobs:
         with:
           app-name: 'EMNIDT-EDGE-APP'
           slot-name: 'Production'
+          package: .
           
