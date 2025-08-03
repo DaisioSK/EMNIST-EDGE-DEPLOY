@@ -21,7 +21,7 @@ jobs:
     - name: Log in to Azure
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.EMNIDT_EDGE_CONTAINER_APP }}
 
     - name: Log in to ACR
       run: |
