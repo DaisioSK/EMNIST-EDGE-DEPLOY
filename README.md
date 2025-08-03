@@ -26,7 +26,9 @@ EMNIST-EDGE/
 ├── app.py                   # Gradio inference app
 ├── EdgeCNN_mobile.pt        # TorchScript traced mobile model
 ├── requirements.txt         # Python dependencies
-└── .gitignore               # Ignore cache and large logs
+├── Dockerfile               # Docker build recipe
+├── .dockerignore            # Docker ignore rules
+└── .gitignore               # Git ignore rules
 ```
 
 ---
@@ -41,7 +43,7 @@ conda activate emnist-edge
 # Step 2: Install dependencies
 pip install -r requirements.txt
 
-# Step 3: Run app
+# Step 3: Run app locally
 python app.py
 ```
 
@@ -71,6 +73,48 @@ Training and evaluation workflows are available in the [`notebooks/`](notebooks/
 
 ---
 
+## ☁️ Azure Deployment (Gradio on Azure App Service for Containers)
+
+This project is deployed live via Azure App Service using a custom Docker container.
+
+### 🔧 Deployment Summary
+
+- **Platform**: Azure App Service for Containers (Linux)
+- **Registry**: Azure Container Registry (ACR)
+- **Model**: TorchScript `EdgeCNN_mobile.pt`
+- **Frontend**: Gradio served via `app.py`
+
+### 📦 Build and Push Docker Image
+
+```bash
+# Build image
+docker build -t emnist-gradio-app .
+
+# Tag for ACR
+docker tag emnist-gradio-app <your-acr-name>.azurecr.io/emnist-gradio-app:v1
+
+# Push to ACR
+docker push <your-acr-name>.azurecr.io/emnist-gradio-app:v1
+```
+
+### 🚀 Deploy to Azure
+
+In Azure Portal:
+
+1. Create Web App → Select **Docker Container**
+2. Set `Image Source` to ACR
+3. Choose `emnist-gradio-app:v1`
+4. Leave startup command blank
+
+📌 *Enable `Always On` to avoid cold start latency*
+
+### 🔗 Live Demo (Optional)
+
+Please refer to the following link for live demo. 
+> [https://emnidt-edge-container-app-gkevhscfbchub4eq.southeastasia-01.azurewebsites.net/]
+
+---
+
 ## 📌 Acknowledgements
 
 - Dataset: [EMNIST by Cohen et al.](https://www.nist.gov/itl/products-and-services/emnist-dataset)
@@ -81,6 +125,6 @@ Training and evaluation workflows are available in the [`notebooks/`](notebooks/
 
 ## 🧪 Future Work
 
-- 📦 Dockerized deployment on Azure App Service
 - 📱 Convert to ONNX and TFLite
 - 📉 Real-time latency benchmarking from client device
+- 🔁 Auto-update via CI/CD to Azure
