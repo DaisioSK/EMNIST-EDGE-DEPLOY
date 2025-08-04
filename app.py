@@ -82,7 +82,7 @@ model_info = f"""
 
 # ✅ Gradio UI
 with gr.Blocks() as demo:
-    gr.Markdown("# 🧠 EMNIST Edge Classifier 1 (Mobile Version)")
+    gr.Markdown("# 🧠 EMNIST Edge Classifier (Mobile Version)")
     gr.Markdown(model_info)
     
     with gr.Row():
